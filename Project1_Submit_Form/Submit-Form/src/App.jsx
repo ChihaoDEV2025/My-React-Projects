@@ -1,35 +1,232 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
+  const [gender, setGender] = useState("");
+  const [subjects, setSubjects] = useState({
+    english: true,
+    math: false,
+    physics: false,
+  });
+  const [resume, setResume] = useState("");
+  const [url, setUrl] = useState();
+  const [selectedOption, setSelectedOption] = useState("");
+  const [about, setAbout] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = {
+      firstName,
+      lastName,
+      email,
+      contact,
+      gender,
+      subjects,
+      resume,
+      selectedOption,
+      url,
+      about,
+    };
+    // Add your form submission logic here
+  };
 
+  // Why I can't use : (prev)=> {} instead of (prev)=> ({}) in below function
+  // Answer: When using an arrow function, if you want to return an object literal, you need to wrap it in parentheses to distinguish it from a block of code. Without the parentheses, JavaScript interprets the curly braces as the start of a function body rather than an object literal.
+  // So, (prev) => ({ key: value }) correctly returns an object, while (prev) => { key: value } is treated as a function body and does not return anything.
+  // In summary, use parentheses when returning an object literal from an arrow function to ensure correct interpretation by JavaScript.
+  // Example:
+  // const updateState = (prev) => ({ ...prev, newKey: 'newValue' }); // Correct
+  // const updateState = (prev) => { ...prev, newKey: 'newValue' }; // Incorrect
+  const handleSubjectChange = (sub) => {
+    setSubjects((prev) => ({
+      ...prev,
+      [sub]: !prev[sub],
+    }));
+  };
+
+  const handleReset = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setContact("");
+    setGender("Male");
+    setSubjects({
+      english: true,
+      math: false,
+      physics: false,
+    });
+    setResume("");
+    setUrl("");
+    setSelectedOption("");
+    setAbout("");
+  };
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <h1>Form in React</h1>
+      <fieldset>
+        <form action="#" method="get">
+          <label for="firstname"></label>
+          <input
+            type="text"
+            name="firstname"
+            id="firstname"
+            value={firstName}
+            onChange={(e) => {
+              setFirstName(e.target.value);
+            }}
+            placeholder="First Name"
+            required
+          />
+          <label for="lastname">Last name</label>
+          <input
+            type="text"
+            name="lastname"
+            id="lastname"
+            value={lastName}
+            onChange={(e) => {
+              setLastName(e.target.value);
+            }}
+            placeholder="Last Name"
+            required
+          />
+          <label for="email">Enter Email* </label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter email"
+            required
+          />
+          <label for="tel">Contact*</label>
+          <input
+            type="tel"
+            name="contact"
+            id="contact"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+            placeholder="Enter Mobile number"
+            required
+          />
+          <label for="gender">Gender*</label>
+          <input
+            type="radio"
+            name="gender"
+            value="male"
+            id="male"
+            checked={gender === "male"}
+            onChange={(e) => setGender(e.target.value)}
+          />
+          Male
+          <input
+            type="radio"
+            name="gender"
+            value="female"
+            id="female"
+            checked={gender === "female"}
+            onChange={(e) => setGender(e.target.value)}
+          />
+          Female
+          <input
+            type="radio"
+            name="gender"
+            value="other"
+            id="other"
+            checked={gender === "other"}
+            onChange={(e) => setGender(e.target.value)}
+          />
+          Other
+          <label for="lang">Your best Subject</label>
+          <input
+            type="checkbox"
+            name="lang"
+            id="english"
+            checked={subjects.english === true}
+            onChange={(e) => handleSubjectChange("english")}
+          />
+          English
+          <input
+            type="checkbox"
+            name="lang"
+            id="maths"
+            checked={subjects.maths === true}
+            onChange={(e) => handleSubjectChange("maths")}
+          />
+          Maths
+          <input
+            type="checkbox"
+            name="lang"
+            id="physics"
+            checked={subjects.physics === true}
+            onChange={(e) => handleSubjectChange("physics")}
+          />
+          Physics
+          <label for="file">Upload Resume*</label>
+          <input
+            type="file"
+            name="file"
+            id="file"
+            onChange={(e) => setResume(e.target.files[0])}
+            placeholder="Enter Upload File"
+            required
+          />
+          <label for="url">Enter URL*</label>
+          <input
+            type="url"
+            name="url"
+            id="url"
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Enter url"
+            required
+          />
+          <label>Select your choice</label>
+          <select
+            name="select"
+            id="select"
+            value={selectedOption}
+            onChange={(e) => setSelectedOption(e.target.value)}
+          >
+            <option value="" disabled selected={selectedOption === ""}>
+              Select your Ans
+            </option>
+            <optgroup label="Beginers">
+              <option value="1">HTML</option>
+              <option value="2">CSS</option>
+              <option value="3">JavaScript</option>
+            </optgroup>
+            <optgroup label="Advance">
+              <option value="4">React</option>
+              <option value="5">Node</option>
+              <option value="6">Express</option>
+              <option value="t">MongoDB</option>
+            </optgroup>
+          </select>
+          <label for="about">About</label>
+          <textarea
+            name="about"
+            id="about"
+            cols="30"
+            rows="10"
+            onChange={(e) => setAbout(e.target.value)}
+            placeholder="About your self"
+            required
+          ></textarea>
+          <button type="reset" value="reset" onClick={() => handleReset()}>
+            Reset
+          </button>
+          <button type="submit" value="Submit" onClick={(e) => handleSubmit(e)}>
+            Submit
+          </button>
+        </form>
+      </fieldset>
+    </div>
+  );
 }
 
-export default App
+export default App;
